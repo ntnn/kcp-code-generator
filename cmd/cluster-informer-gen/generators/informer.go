@@ -151,6 +151,7 @@ var typeClusterInformerInterface = `
 // $.type|publicPlural$.
 type $.type|public$ClusterInformer interface {
 	Cluster($.logicalclusterName|raw$) $.informerInterface|raw$
+	ClusterWithContext(context.Context, $.logicalclusterName|raw$) $.informerInterface|raw$
 	Informer() $.scopeableCacheSharedIndexInformer|raw$
 	Lister() $.clusterLister|raw$
 }
@@ -224,6 +225,13 @@ var typeInformerCluster = `
 func (i *$.type|private$ClusterInformer) Cluster(clusterName $.logicalclusterName|raw$) $.informerInterface|raw$ {
 	return &$.type|private$Informer{
 		informer: i.Informer().Cluster(clusterName),
+		lister:   i.Lister().Cluster(clusterName),
+	}
+}
+
+func (i *$.type|private$ClusterInformer) ClusterWithContext(ctx context.Context, clusterName $.logicalclusterName|raw$) $.informerInterface|raw$ {
+	return &$.type|private$Informer{
+		informer: i.Informer().ClusterWithContext(ctx, clusterName),
 		lister:   i.Lister().Cluster(clusterName),
 	}
 }
