@@ -13,6 +13,8 @@ require (
 	sigs.k8s.io/structured-merge-diff/v4 v4.6.0
 )
 
+replace github.com/kcp-dev/apimachinery/v2 => github.com/ntnn/kcp-apimachinery/v2 v2.0.1-0.20250519112719-465380c3008a
+
 require (
 	github.com/davecgh/go-spew v1.1.2-0.20180830191138-d8f796af33cc // indirect
 	github.com/emicklei/go-restful/v3 v3.12.1 // indirect
