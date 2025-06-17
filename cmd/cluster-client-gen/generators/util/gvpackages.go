@@ -33,6 +33,12 @@ func ParsePathGroupVersion(pgvString string) (gvPath string, gvString string) {
 	}
 }
 
+// GroupFromPackage turns "acme.corp/pkg/apis/example/v2" into
+// "example.acme.corp".
+func GroupFromPackage(pkgName string) string {
+	group := path.Base(path.Dir(pkgName))
+}
+
 // GroupVersionAliasFromPackage turns "acme.corp/pkg/apis/example/v2" into "examplev2".
 func GroupVersionAliasFromPackage(pkgName string) string {
 	version := path.Base(pkgName)

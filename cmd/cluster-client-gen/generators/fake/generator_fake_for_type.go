@@ -96,6 +96,11 @@ func (g *genFakeForType) GenerateType(c *generator.Context, t *types.Type, w io.
 		typedInterfacePkg = g.realClientPackage
 	}
 
+	// apiGroup := t.Name.Package
+	// if t.Name.Path != "" {
+	// 	apiGroup = t.Name.Path
+	// }
+
 	// const pkgClientGoTesting = "k8s.io/client-go/testing"
 	const pkgClientGoTesting = "github.com/kcp-dev/client-go/third_party/k8s.io/client-go/testing"
 	m := map[string]interface{}{
@@ -105,8 +110,10 @@ func (g *genFakeForType) GenerateType(c *generator.Context, t *types.Type, w io.
 		"subresourcePath":     "",
 		"namespaced":          !tags.NonNamespaced,
 		"group":               t.Name.Package,
+		"apiGroup":            g.realClientPackage,
 		"GroupGoName":         g.groupGoName,
 		"Version":             namer.IC(g.version),
+		"version":             g.version,
 		"groupVersion":        util.GroupVersionAliasFromPackage(g.realClientPackage),
 		"realClientInterface": c.Universe.Type(types.Name{Package: g.realClientPackage, Name: t.Name.Name + "Interface"}),
 		"SchemeGroupVersion":  c.Universe.Type(types.Name{Package: t.Name.Package, Name: "SchemeGroupVersion"}),
@@ -321,6 +328,9 @@ const (
 
 // cluster struct declarations.
 var listableClusterClientType = `
+var $.type|private$Resource = schema.GroupVersionResource{Group: "$.group$", Version: "$.version$", Resource: "$.type|allLowercasePlural$"}
+var $.type|private$Kind = schema.GroupVersionResource{Group: "$.apiGroup$", Version: "$.version$", Kind: "$.type|singularKind$"}
+
 // $.type|private$ClusterClient implements $.type|singularKind$ClusterInterface
 type $.type|private$ClusterClient struct {
 	*kcpgentype.FakeClusterClientWithList[*$.groupVersion$.$.type|singularKind$, *$.groupVersion$.$.type|singularKind$List]
